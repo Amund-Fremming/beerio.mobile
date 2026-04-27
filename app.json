@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "beerio.mobile",
-    "slug": "beerio.mobile",
+    "name": "Beerio",
+    "slug": "beerio",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -10,11 +10,13 @@
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#04040a"
     },
     "scheme": "beerio",
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": false,
+      "bundleIdentifier": "com.beerio.app",
+      "buildNumber": "1"
     },
     "android": {
       "adaptiveIcon": {
