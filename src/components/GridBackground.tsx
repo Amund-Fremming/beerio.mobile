@@ -1,19 +1,50 @@
-import { StyleSheet } from 'react-native'
-import Svg, { Defs, Line, Pattern, Rect } from 'react-native-svg'
+import React from "react";
+import { Dimensions, StyleSheet, View } from "react-native";
+import { horizontalScale, moderateScale } from "../utils/scaling";
 
-const GRID_SIZE = 32
-const LINE_COLOR = 'rgba(245,230,66,0.06)'
+const GRID_SIZE = 32;
+const LINE_COLOR = "rgba(245,230,66,0.03)";
 
 export default function GridBackground() {
+  const { width, height } = Dimensions.get("window");
+
+  const lines: React.ReactElement[] = [];
+
+  for (let x = GRID_SIZE; x < width; x += GRID_SIZE) {
+    lines.push(
+      <View
+        key={`v${x}`}
+        style={{
+          position: "absolute",
+          left: horizontalScale(x),
+          top: 0,
+          width: 1,
+          height,
+          backgroundColor: LINE_COLOR,
+        }}
+      />,
+    );
+  }
+
+  for (let y = GRID_SIZE; y < height; y += GRID_SIZE) {
+    lines.push(
+      <View
+        key={`h${y}`}
+        style={{
+          position: "absolute",
+          top: y,
+          left: 0,
+          height: 1,
+          width,
+          backgroundColor: LINE_COLOR,
+        }}
+      />,
+    );
+  }
+
   return (
-    <Svg style={StyleSheet.absoluteFill} width="100%" height="100%">
-      <Defs>
-        <Pattern id="grid" width={GRID_SIZE} height={GRID_SIZE} patternUnits="userSpaceOnUse">
-          <Line x1="0" y1={GRID_SIZE} x2={GRID_SIZE} y2={GRID_SIZE} stroke={LINE_COLOR} strokeWidth={1} />
-          <Line x1={GRID_SIZE} y1="0" x2={GRID_SIZE} y2={GRID_SIZE} stroke={LINE_COLOR} strokeWidth={1} />
-        </Pattern>
-      </Defs>
-      <Rect width="100%" height="100%" fill="url(#grid)" />
-    </Svg>
-  )
+    <View style={[StyleSheet.absoluteFill, { pointerEvents: "none" }]}>
+      {lines}
+    </View>
+  );
 }

@@ -2,9 +2,15 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useEffect } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import GridBackground from "../components/GridBackground";
 import type { RootStackParamList } from "../../App";
 import { useI18n } from "../i18n";
 import { colors } from "../theme";
+import {
+  horizontalScale,
+  moderateScale,
+  verticalScale,
+} from "../utils/scaling";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Home">;
 
@@ -19,6 +25,7 @@ export default function HomeScreen({ navigation }: Props) {
 
   return (
     <View style={styles.screen}>
+      <GridBackground />
       <TouchableOpacity
         onPress={() => setLang(lang === "en" ? "no" : "en")}
         style={styles.flagBtn}
@@ -63,40 +70,40 @@ export default function HomeScreen({ navigation }: Props) {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: "transparent",
+    backgroundColor: "#04040a",
     alignItems: "center",
     justifyContent: "center",
-    padding: 20,
-    gap: 14,
+    padding: horizontalScale(20),
+    gap: verticalScale(14),
   },
-  wordmark: { alignItems: "center", marginBottom: 4 },
+  wordmark: { alignItems: "center", marginBottom: verticalScale(4) },
   wordmarkText: {
-    fontSize: 56,
+    fontSize: moderateScale(56),
     fontWeight: "900",
     color: colors.neonY,
     letterSpacing: -2,
   },
   wordmarkSub: {
-    fontSize: 10,
+    fontSize: moderateScale(10),
     fontWeight: "700",
     letterSpacing: 3,
     color: colors.textMuted,
-    marginTop: 4,
+    marginTop: verticalScale(4),
   },
   grid: {
     flexDirection: "row",
-    gap: 12,
+    gap: horizontalScale(12),
     width: "100%",
-    marginTop: 8,
+    marginTop: verticalScale(8),
   },
   card: {
     flex: 1,
     backgroundColor: colors.surface,
     borderWidth: 1,
-    borderRadius: 24,
-    padding: 28,
+    borderRadius: moderateScale(24),
+    padding: moderateScale(28),
     alignItems: "center",
-    gap: 10,
+    gap: verticalScale(10),
   },
   createCard: {
     borderColor: "rgba(57,255,20,0.2)",
@@ -104,14 +111,23 @@ const styles = StyleSheet.create({
   joinCard: {
     borderColor: "rgba(0,240,255,0.2)",
   },
-  icon: { fontSize: 40 },
-  label: { fontSize: 18, fontWeight: "900" },
-  desc: { fontSize: 12, color: colors.textMuted, textAlign: "center" },
+  icon: { fontSize: moderateScale(40) },
+  label: { fontSize: moderateScale(18), fontWeight: "900" },
+  desc: {
+    fontSize: moderateScale(12),
+    color: colors.textMuted,
+    textAlign: "center",
+  },
   footer: {
-    fontSize: 11,
+    fontSize: moderateScale(11),
     color: colors.textDim,
     textAlign: "center",
-    marginTop: 8,
+    marginTop: verticalScale(8),
   },
-  flagBtn: { position: "absolute", top: 72, right: 20, zIndex: 10 },
+  flagBtn: {
+    position: "absolute",
+    top: verticalScale(72),
+    right: horizontalScale(20),
+    zIndex: 10,
+  },
 });

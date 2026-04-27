@@ -12,9 +12,15 @@ import {
 } from "react-native";
 import type { RootStackParamList } from "../../App";
 import ErrorBanner from "../components/ErrorBanner";
+import GridBackground from "../components/GridBackground";
 import { useI18n } from "../i18n";
 import { api, isApiError } from "../services/api";
 import { colors } from "../theme";
+import {
+  horizontalScale,
+  moderateScale,
+  verticalScale,
+} from "../utils/scaling";
 
 type Props = NativeStackScreenProps<RootStackParamList, "JoinRoom">;
 
@@ -50,6 +56,7 @@ export default function JoinRoomScreen({ navigation }: Props) {
       style={styles.screen}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
+      <GridBackground />
       <TouchableOpacity
         onPress={() => navigation.goBack()}
         style={styles.backLink}
@@ -102,40 +109,40 @@ export default function JoinRoomScreen({ navigation }: Props) {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: "transparent",
-    padding: 20,
-    paddingTop: 80,
-    gap: 14,
+    backgroundColor: "#04040a",
+    padding: horizontalScale(20),
+    paddingTop: verticalScale(80),
+    gap: verticalScale(14),
   },
-  backLink: { alignSelf: "flex-start", paddingVertical: 4 },
+  backLink: { alignSelf: "flex-start", paddingVertical: verticalScale(4) },
   backText: {
     color: colors.textMuted,
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: "800",
     letterSpacing: 1,
   },
   title: {
-    fontSize: 28,
+    fontSize: moderateScale(28),
     fontWeight: "900",
     color: colors.text,
     letterSpacing: -0.5,
   },
-  sub: { fontSize: 13, color: colors.textMuted },
+  sub: { fontSize: moderateScale(13), color: colors.textMuted },
   headerCard: {
-    height: 110,
+    height: verticalScale(110),
     justifyContent: "center",
   },
   card: {
     backgroundColor: colors.surface,
     borderWidth: 1,
     borderColor: colors.border,
-    borderRadius: 24,
-    padding: 22,
-    gap: 20,
+    borderRadius: moderateScale(24),
+    padding: moderateScale(22),
+    gap: verticalScale(20),
   },
-  field: { gap: 8 },
+  field: { gap: verticalScale(8) },
   fieldLabel: {
-    fontSize: 11,
+    fontSize: moderateScale(11),
     fontWeight: "800",
     letterSpacing: 1.5,
     color: colors.neonB,
@@ -144,17 +151,21 @@ const styles = StyleSheet.create({
     backgroundColor: colors.surface2,
     borderWidth: 1,
     borderColor: colors.border,
-    borderRadius: 16,
+    borderRadius: moderateScale(16),
     color: colors.text,
-    fontSize: 16,
+    fontSize: moderateScale(16),
     fontWeight: "600",
-    padding: 14,
+    padding: moderateScale(14),
   },
   btnPrimary: {
     backgroundColor: colors.neonY,
-    borderRadius: 16,
-    padding: 16,
+    borderRadius: moderateScale(16),
+    padding: moderateScale(16),
     alignItems: "center",
   },
-  btnPrimaryText: { color: "#040408", fontWeight: "800", fontSize: 16 },
+  btnPrimaryText: {
+    color: "#040408",
+    fontWeight: "800",
+    fontSize: moderateScale(16),
+  },
 });

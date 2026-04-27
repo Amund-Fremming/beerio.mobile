@@ -16,6 +16,12 @@ import ErrorBanner from "../components/ErrorBanner";
 import { useI18n } from "../i18n";
 import { api, isApiError } from "../services/api";
 import { colors } from "../theme";
+import GridBackground from "../components/GridBackground";
+import {
+  horizontalScale,
+  moderateScale,
+  verticalScale,
+} from "../utils/scaling";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Username">;
 
@@ -56,13 +62,13 @@ export default function UsernameScreen({ navigation, route }: Props) {
       style={styles.screen}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
+      <GridBackground />
       <TouchableOpacity
         onPress={() => navigation.goBack()}
         style={styles.backLink}
       >
         <Text style={styles.backText}>{t.back}</Text>
       </TouchableOpacity>
-
       <View style={[styles.card, styles.headerCard]}>
         <Text style={styles.title}>{t.whatsYourName}</Text>
         <Text style={styles.sub}>
@@ -72,7 +78,6 @@ export default function UsernameScreen({ navigation, route }: Props) {
           </Text>
         </Text>
       </View>
-
       <View style={styles.card}>
         <View style={styles.field}>
           <Text style={styles.fieldLabel}>{t.yourName}</Text>
@@ -112,40 +117,40 @@ export default function UsernameScreen({ navigation, route }: Props) {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: "transparent",
-    padding: 20,
-    paddingTop: 80,
-    gap: 14,
+    backgroundColor: "#04040a",
+    padding: horizontalScale(20),
+    paddingTop: verticalScale(80),
+    gap: verticalScale(14),
   },
-  backLink: { alignSelf: "flex-start", paddingVertical: 4 },
+  backLink: { alignSelf: "flex-start", paddingVertical: verticalScale(4) },
   backText: {
     color: colors.textMuted,
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: "800",
     letterSpacing: 1,
   },
   headerCard: {
-    height: 110,
+    height: verticalScale(110),
     justifyContent: "center",
   },
   card: {
     backgroundColor: colors.surface,
     borderWidth: 1,
     borderColor: colors.border,
-    borderRadius: 24,
-    padding: 22,
-    gap: 20,
+    borderRadius: moderateScale(24),
+    padding: moderateScale(22),
+    gap: verticalScale(20),
   },
   title: {
-    fontSize: 28,
+    fontSize: moderateScale(28),
     fontWeight: "900",
     color: colors.text,
     letterSpacing: -0.5,
   },
-  sub: { fontSize: 13, color: colors.textMuted },
-  field: { gap: 8 },
+  sub: { fontSize: moderateScale(13), color: colors.textMuted },
+  field: { gap: verticalScale(8) },
   fieldLabel: {
-    fontSize: 11,
+    fontSize: moderateScale(11),
     fontWeight: "800",
     letterSpacing: 1.5,
     color: colors.neonB,
@@ -154,18 +159,22 @@ const styles = StyleSheet.create({
     backgroundColor: colors.surface2,
     borderWidth: 1,
     borderColor: colors.border,
-    borderRadius: 16,
+    borderRadius: moderateScale(16),
     color: colors.text,
-    fontSize: 16,
+    fontSize: moderateScale(16),
     fontWeight: "600",
-    padding: 14,
+    padding: moderateScale(14),
   },
   btnPrimary: {
     backgroundColor: colors.neonY,
-    borderRadius: 16,
-    padding: 16,
+    borderRadius: moderateScale(16),
+    padding: moderateScale(16),
     alignItems: "center",
-    marginTop: 8,
+    marginTop: verticalScale(8),
   },
-  btnPrimaryText: { color: "#040408", fontWeight: "800", fontSize: 16 },
+  btnPrimaryText: {
+    color: "#040408",
+    fontWeight: "800",
+    fontSize: moderateScale(16),
+  },
 });
