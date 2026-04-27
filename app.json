@@ -12,6 +12,7 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    "scheme": "beerio",
     "ios": {
       "supportsTablet": true
     },
