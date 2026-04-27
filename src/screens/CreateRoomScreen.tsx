@@ -1,50 +1,70 @@
-import type { NativeStackScreenProps } from '@react-navigation/native-stack'
-import { useState } from 'react'
-import { ActivityIndicator, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import type { RootStackParamList } from '../../App'
-import ErrorBanner from '../components/ErrorBanner'
-import { useI18n } from '../i18n'
-import { api, isApiError } from '../services/api'
-import { colors } from '../theme'
+import type { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { useState } from "react";
+import {
+  ActivityIndicator,
+  KeyboardAvoidingView,
+  Platform,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import type { RootStackParamList } from "../../App";
+import ErrorBanner from "../components/ErrorBanner";
+import { useI18n } from "../i18n";
+import { api, isApiError } from "../services/api";
+import { colors } from "../theme";
 
-const UNIT_SIZES = [0.33, 0.5] as const
+const UNIT_SIZES = [0.33, 0.5] as const;
 
-type Props = NativeStackScreenProps<RootStackParamList, 'CreateRoom'>
+type Props = NativeStackScreenProps<RootStackParamList, "CreateRoom">;
 
 export default function CreateRoomScreen({ navigation }: Props) {
-  const { t } = useI18n()
-  const [unitSize, setUnitSize] = useState<0.33 | 0.5>(0.33)
-  const [unitGoal, setUnitGoal] = useState('10')
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+  const { t } = useI18n();
+  const [unitSize, setUnitSize] = useState<0.33 | 0.5>(0.33);
+  const [unitGoal, setUnitGoal] = useState("10");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   async function handleSubmit() {
-    const goal = parseFloat(unitGoal)
+    const goal = parseFloat(unitGoal);
     if (isNaN(goal) || goal <= 0) {
-      setError(t.positiveGoal)
-      return
+      setError(t.positiveGoal);
+      return;
     }
-    setLoading(true)
-    setError(null)
+    setLoading(true);
+    setError(null);
     try {
-      const { room_id } = await api.createRoom(unitSize, goal)
-      navigation.replace('Username', { roomId: room_id })
+      const { room_id } = await api.createRoom(unitSize, goal);
+      navigation.replace("Username", { roomId: room_id });
     } catch (err) {
       if (isApiError(err)) {
-        setError(`${t.failedCreateRoom} (${err.status}): ${err.message}`)
+        setError(`${t.failedCreateRoom} (${err.status}): ${err.message}`);
       } else {
-        setError(t.serverDown)
+        setError(t.serverDown);
       }
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   }
 
   return (
-    <View style={styles.screen}>
-      <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backLink}>
+    <KeyboardAvoidingView
+      style={styles.screen}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+    >
+      <TouchableOpacity
+        onPress={() => navigation.goBack()}
+        style={styles.backLink}
+      >
         <Text style={styles.backText}>{t.back}</Text>
       </TouchableOpacity>
+
+      <View style={[styles.card, styles.headerCard]}>
+        <Text style={styles.title}>⚡ {t.create}</Text>
+        <Text style={styles.sub}>{t.createDesc}</Text>
+      </View>
 
       <View style={styles.card}>
         <View style={styles.field}>
@@ -56,7 +76,12 @@ export default function CreateRoomScreen({ navigation }: Props) {
                 style={[styles.segBtn, unitSize === s && styles.segBtnActive]}
                 onPress={() => setUnitSize(s)}
               >
-                <Text style={[styles.segBtnText, unitSize === s && styles.segBtnTextActive]}>
+                <Text
+                  style={[
+                    styles.segBtnText,
+                    unitSize === s && styles.segBtnTextActive,
+                  ]}
+                >
                   🍺 {s}L
                 </Text>
               </TouchableOpacity>
@@ -92,21 +117,36 @@ export default function CreateRoomScreen({ navigation }: Props) {
           )}
         </TouchableOpacity>
       </View>
-    </View>
-  )
+    </KeyboardAvoidingView>
+  );
 }
 
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: 'transparent',
+    backgroundColor: "transparent",
     padding: 20,
-    paddingTop: 60,
+    paddingTop: 80,
     gap: 14,
   },
-  backLink: { alignSelf: 'flex-start' },
-  backText: { color: colors.textMuted, fontSize: 11, fontWeight: '800', letterSpacing: 1 },
-  title: { fontSize: 28, fontWeight: '900', color: colors.text, letterSpacing: -0.5 },
+  backLink: { alignSelf: "flex-start", paddingVertical: 4 },
+  backText: {
+    color: colors.textMuted,
+    fontSize: 14,
+    fontWeight: "800",
+    letterSpacing: 1,
+  },
+  title: {
+    fontSize: 28,
+    fontWeight: "900",
+    color: colors.text,
+    letterSpacing: -0.5,
+  },
+  sub: { fontSize: 13, color: colors.textMuted },
+  headerCard: {
+    height: 110,
+    justifyContent: "center",
+  },
   card: {
     backgroundColor: colors.surface,
     borderWidth: 1,
@@ -114,18 +154,16 @@ const styles = StyleSheet.create({
     borderRadius: 24,
     padding: 22,
     gap: 20,
-    marginTop: 'auto',
-    marginBottom: 'auto',
   },
   field: { gap: 8 },
   fieldLabel: {
     fontSize: 11,
-    fontWeight: '800',
+    fontWeight: "800",
     letterSpacing: 1.5,
     color: colors.neonB,
   },
   segmented: {
-    flexDirection: 'row',
+    flexDirection: "row",
     backgroundColor: colors.surface2,
     borderWidth: 1,
     borderColor: colors.border,
@@ -135,15 +173,15 @@ const styles = StyleSheet.create({
   },
   segBtn: {
     flex: 1,
-    alignItems: 'center',
+    alignItems: "center",
     paddingVertical: 10,
     borderRadius: 12,
   },
   segBtnActive: {
     backgroundColor: colors.neonY,
   },
-  segBtnText: { color: colors.textMuted, fontWeight: '700', fontSize: 14 },
-  segBtnTextActive: { color: '#040408' },
+  segBtnText: { color: colors.textMuted, fontWeight: "700", fontSize: 14 },
+  segBtnTextActive: { color: "#040408" },
   input: {
     backgroundColor: colors.surface2,
     borderWidth: 1,
@@ -151,7 +189,7 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     color: colors.text,
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: "600",
     padding: 14,
   },
   hint: { fontSize: 12, color: colors.textMuted },
@@ -159,7 +197,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.neonY,
     borderRadius: 16,
     padding: 16,
-    alignItems: 'center',
+    alignItems: "center",
   },
-  btnPrimaryText: { color: '#040408', fontWeight: '800', fontSize: 16 },
-})
+  btnPrimaryText: { color: "#040408", fontWeight: "800", fontSize: 16 },
+});
