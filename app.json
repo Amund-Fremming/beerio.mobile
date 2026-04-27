@@ -2,7 +2,7 @@
   "expo": {
     "name": "beerio",
     "slug": "beerio",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -24,7 +24,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/adaptive-icon.png.png",
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
